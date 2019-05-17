@@ -13,11 +13,14 @@ You can easily start with Download this project ZIP
 
 ### Build
 1. It requires [Node.js](https://nodejs.org/) and [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159)
-Any version will be okay, but not sure
+
+   Any version will be okay, but not sure
 
 2. For node-gyp, [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159) should installed
-(If you have **VS 2015** or **VS 2017**, you can skip this step)
-**Don't use VS 2019! (Compatibility issue with node-gyp)**
+
+   (If you have **VS 2015** or **VS 2017**, you can skip this step)
+
+   **Don't use VS 2019! (Compatibility issue with node-gyp)**
 
 3. If all are installed, write this command
 ```bash
