@@ -1,5 +1,5 @@
 # Serial to Graph Visualizer
-
+![Serial to Graph Visualizer](https://user-images.githubusercontent.com/9062624/57948142-d2400680-791b-11e9-8df4-8e82e2c6bfda.png)
 Simple graph viewer communicates with serial(COM port).
 
 ## Getting Started
