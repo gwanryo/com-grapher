@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src * 'self' data:;">
+    <link rel="stylesheet" href="css/bootstrap-4.3.1.min.css">
+    <title>COM Grapher</title>
+    <style>
+      input {
+        text-align:right;
+      }
+      canvas{
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light">
+      <span class="navbar-brand mb-0 h1">Serial to Graph Visualizer</span>
+    </nav>
+    <div class="container-fluid mt-3">
+      <div class="row">
+        <div class="col-sm-2" id="height-col-1">
+          <label id="height-label"><b>Serial Communication</b></label>
+          <div class="input-group mb-1">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="serial-port">COM Port</span>
+            </div>
+            <input type="text" class="form-control" id="serialport" aria-label="COM" aria-describedby="serial-port" value="COM5">
+          </div>
+          <div class="input-group mb-1">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="baud-rate">Baudrate</span>
+            </div>
+            <input type="text" class="form-control" id="baudrate" aria-label="Baudrate" aria-describedby="baud-rate" value="460800">
+          </div>
+          <div class="input-group mb-1">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="databits">Databits</label>
+            </div>
+            <select class="custom-select" id="databits" dir="rtl">
+              <option value="8" selected>8</option>
+              <option value="7">7</option>
+              <option value="6">6</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+          <div class="input-group mb-1">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="parity">Parity</label>
+            </div>
+            <select class="custom-select" id="parity" dir="rtl">
+              <option value="none" selected>None</option>
+              <option value="even">Even</option>
+              <option value="odd">Odd</option>
+              <option value="mark">Mark</option>
+              <option value="space">Space</option>
+            </select>
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="stopbits">Stopbits</label>
+            </div>
+            <select class="custom-select" id="stopbits" dir="rtl">
+              <option value="1" selected>1</option>
+              <option value="2">2</option>
+            </select>
+          </div>
+          <div class="input-group mb-3">
+            <button type="button" class="btn btn-light btn-block" id="serial-connect">Connect</button>
+          </div>
+          <div class="input-group mb-3">
+            <textarea class="form-control" id="log" rows="27" readonly="readonly" style="resize:none;font-size:0.6rem"></textarea>
+          </div>
+          <div class="input-group mb-3">
+            <div class="btn-group btn-block" role="group" aria-label="btn-group-1">
+              <button type="button" class="btn btn-light" id="toggle-logging">Stop Log</button>
+              <button type="button" class="btn btn-light" id="clear-logging">Clear</button>
+              <button type="button" class="btn btn-light" id="toggle-record">Record</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- I think I'll add this feature in near future. -->
+        <!-- <div class="col-sm-2">
+          <label><b>Utility</b></label>
+          <div class="input-group mb-3">
+          </div>
+        </div> -->
+
+        <div class="col-sm-2 height-col-2">
+          <label><b>Initial Value</b></label>
+          <div class="input-group mb-1">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="arm-length">Arm</span>
+            </div>
+            <input type="text" class="form-control" id="armlength" aria-label="length" aria-describedby="arm-length" value="0.3">
+            <div class="input-group-append">
+              <span class="input-group-text" id="arm-length">m</span>
+            </div>
+          </div>
+          <div class="input-group mb-1">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="dumbbell-weight">Dumbbell</span>
+            </div>
+            <input type="text" class="form-control" id="dumbbellweight" aria-label="weight" aria-describedby="dumbbell-weight" value="6">
+            <div class="input-group-append">
+              <span class="input-group-text" id="dumbbell-weight">kg</span>
+            </div>
+          </div>
+          <div class="input-group mb-1">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="encoder-degree">Encoder</span>
+            </div>
+            <input type="text" class="form-control" id="encoderdegree" aria-label="degree" aria-describedby="encoder-degree" value="9">
+            <div class="input-group-append">
+              <span class="input-group-text" id="encoder-degree">˚</span>
+            </div>
+          </div>
+          <div class="input-group mb-1">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="max-dataset">Dataset</span>
+            </div>
+            <input type="text" class="form-control" id="maxdataset" aria-label="dataset" aria-describedby="max-dataset" value="30">
+            <div class="input-group-append">
+              <button class="btn btn-light" type="button" id="apply-dataset">Apply</button>
+            </div>
+          </div>
+          <label class="mt-3"><b>Data Selection</b></label>
+          <div class="input-group mb-3">
+            <select multiple class="form-control" id="select-data" size="34" style="font-size:0.6rem;overflow:hidden">
+            </select>
+          </div>
+          <div class="input-group mb-3">
+              <div class="btn-group btn-block" role="group" aria-label="btn-group-2">
+                <button type="button" class="btn btn-light" id="draw-graph">Draw</button>
+                <button type="button" class="btn btn-light" id="clear-graph-last" style="font-size:0.9rem">Clear Last</button>
+                <button type="button" class="btn btn-light" id="clear-graph" style="font-size:0.9rem">Clear All</button>
+              </div>
+            </div>
+        </div>
+
+        <div class="col-sm-8">
+          <label><b>Visualization</b></label>
+          <div class="serial-graph">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModal01" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="errorModal01">Error!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Something wrong happened.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+  require('bootstrap');
+  const fs = require('fs');
+  const dialog = require('electron').remote.dialog;
+  window.$ = window.jQuery = require('jquery');
+  window.Popper = require('popper.js');
+  window.Chart = require('./js/Chart');
+  window.chartColor = ['#007bff', '#6610f2', '#6f42c1', '#e83e8c', '#dc3545', '#fd7e14', '#ffc107', '#28a745', '#20c997', '#17a2b8', '#6c757d', '#007bff', '#17a2b8', '#343a40'];
+
+  const ANGLE_INDEX = 32;
+  var MAX_DATASET_LENGTH = 30;
+  const G = 9.80665;
+  const PI = 3.1415926535;
+
+  $(function(){
+    // Initialize multiselect height
+    $('div#height-col-2').css('height', `${$('div#height-col-1').height()}px`);
+
+    // Load serialport module
+    const serialPort = require('serialport');
+    const Readline = require('@serialport/parser-readline');
+    var sp, parser, gArr = [], canvasObj = [];
+
+    $('button#serial-connect').click(function() {
+      // If there is exist connection, close that connection.
+      if ($('button#serial-connect').text() === "Disconnect") {
+        logOnScreen('log', 'Disconnection request accepted.');
+        
+        if (typeof sp === "undefined"
+          || typeof parser === "undefined") {
+          $('#errorModal').modal('show');
+          return;
+        }
+
+        parser.destroy();
+        sp.pause();
+        sp.close();
+
+        parser = null, sp = null;
+
+        $('input#serialport').removeAttr("disabled");
+        $('input#baudrate').removeAttr("disabled");
+        $('select#databits').removeAttr("disabled");
+        $('select#parity').removeAttr("disabled");
+        $('select#stopbits').removeAttr("disabled");
+        $('button#serial-connect').text("Connect");
+        
+        return;
+      }
+
+      // Verify COM port, and baudrate, parity, stopbits.
+      // There is no support for flow control. :)
+      // 
+      // @typedef {object} openoptions
+      // @property {boolean} [autoopen=true] automatically opens the port on `nexttick`.
+      // @property {number=} [baudrate=9600] the baud rate of the port to be opened. this should match one of the commonly available baud rates, such as 110, 300, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, or 115200. custom rates are supported best effort per platform. the device connected to the serial port is not guaranteed to support the requested baud rate, even if the port itself supports that baud rate.
+      // @property {number} [databits=8] must be one of these: 8, 7, 6, or 5.
+      // @property {number} [stopbits=1] must be one of these: 1 or 2.
+      // @property {string} [parity=none] must be one of these: 'none', 'even', 'mark', 'odd', 'space'.
+
+      var comPort = $('input#serialport').val();
+      var baudRate = Number($('input#baudrate').val());
+      var dataBits = Number($('select#databits').val());
+      var parity = $('select#parity').val();
+      var stopBits = Number($('select#stopbits').val());
+
+      // console.log(typeof comPort, typeof baudRate, typeof dataBits, typeof parity, typeof stopBits);
+
+      if (typeof comPort !== "string"
+        || typeof baudRate !== "number"
+        || typeof dataBits !== "number"
+        || typeof parity !== "string"
+        || typeof stopBits !== "number") {
+        $('#errorModal').modal('show');
+        return;
+      }
+
+      // Initialize serialport with preset baudrate.
+      sp = new serialPort(comPort, {
+        autoopen: false,
+        baudRate: baudRate,
+        databits: dataBits,
+        parity: parity,
+        stopbits: stopBits
+      });
+
+      // Parse incoming data line-by-line from serial port.
+      parser = sp.pipe(new Readline({ delimiter: '\r' }));
+      parser.on('data', functionQueue);
+
+      $('input#serialport').attr("disabled", "disabled");
+      $('input#baudrate').attr("disabled", "disabled");
+      $('select#databits').attr("disabled", "disabled");
+      $('select#parity').attr("disabled", "disabled");
+      $('select#stopbits').attr("disabled", "disabled");
+      $('button#serial-connect').text("Disconnect");
+
+      function functionQueue(rawText) {
+        logOnScreen('debug', rawText);
+        updateDataSelection(rawText);
+        drawGraph(rawText);
+        recordFile(rawText);
+      };
+    });
+
+    $('button#toggle-logging').click(function() {
+      if ($('button#toggle-logging').text() === "Stop Log")
+        $('button#toggle-logging').text('Start Log');
+      else
+        $('button#toggle-logging').text('Stop Log');
+    });
+
+    $('button#clear-logging').click(function() {
+      $('textarea#log').val('');
+    });
+
+    $('button#toggle-record').click(function() {
+      if (typeof sp === "undefined"
+        || typeof parser === "undefined"
+        || sp === null
+        || parser === null) {  
+        $('#errorModal').modal('show');
+        return;
+      }
+
+      if ($('button#toggle-record').text() === "Record")
+        $('button#toggle-record').text('Stop');
+      else
+        $('button#toggle-record').text('Record');
+    });
+
+    $('button#draw-graph').click(function() {
+      var selectArr = $('select#select-data').val();
+      if (selectArr.length <= 0) return;
+
+      gArr.push(selectArr);
+      
+      var graphObj = $(`<div class="col-sm-12">
+        <canvas id="graph-${gArr.length - 1}" style="width:100%;height:140px"></canvas>
+      </div>`);
+
+      $('div.serial-graph').append(graphObj.clone());
+      var chartObj = new Chart($(`canvas#graph-${gArr.length - 1}`), {
+        type: 'line',
+        data: [],
+        options: {
+          animation: false,
+          responsive: true,
+          title: {
+            display: false,
+          },
+          scales: {
+            xAxes: [{
+              display: false,
+              scaleLabel: {
+                display: false,
+              }
+            }]
+          }
+        }
+      });
+
+      canvasObj.push(chartObj);
+      // console.log(gArr, canvasObj);
+    });
+
+    $('button#clear-graph-last').click(function() {
+      gArr.pop();
+      canvasObj.pop();
+      $('div.serial-graph').children().last().remove();
+      // console.log(gArr, canvasObj);
+    });
+
+    $('button#clear-graph').click(function() {
+      gArr = [];
+      canvasObj = [];
+      $('div.serial-graph').children().remove();
+      // console.log(gArr, canvasObj);
+    });
+
+    $('button#apply-dataset').click(function() {
+      if ($('div#serial-graph').text() === "")
+        MAX_DATASET_LENGTH = $('input#maxdataset').val();
+    });
+
+    // Log in Textarea
+    function logOnScreen(type, obj) {
+      var uptime = process.uptime().toFixed(3);
+      var uType = type.toUpperCase();
+
+      if ($('button#toggle-logging').text() === "Stop Log") {
+        $('textarea#log').val( $('textarea#log').val() + "\r\n" + `[${uptime}:${uType}] ${JSON.parse(JSON.stringify(obj))}` );
+        document.getElementById("log").scrollTop = document.getElementById("log").scrollHeight;
+      }
+
+      if (type==="error")
+        console.error(`[${uptime}:${uType}] ${JSON.parse(JSON.stringify(obj))}`);
+      else if (type==="warn")
+        console.warn(`[${uptime}:${uTtype}] ${JSON.parse(JSON.stringify(obj))}`);
+      else if (type==="info")
+        console.info(`[${uptime}:${uType}] ${JSON.parse(JSON.stringify(obj))}`);
+      // else if (type==="debug")
+      //   console.debug(`[${uptime}:${uType}] ${JSON.parse(JSON.stringify(obj))}`);
+      // else
+      //   console.log(`[${uptime}:${uType}] ${JSON.parse(JSON.stringify(obj))}`);
+
+    };
+
+    // Display value changes on multiselect.
+    function updateDataSelection(rawText) {
+      var arrData = rawText.replace('[', '').replace(']', '').split(',');
+      // var selectData = $('select#select-data');
+      var optionData = $('select#select-data > option');
+      var optionObj = $('<option></option>');
+      var reOptionData;
+      var length = (arrData.length > optionData.length)?arrData.length:arrData.length;
+
+      for(i = 0; i < length; i++) {
+        if (typeof arrData[i] === "undefined") {
+          logOnScreen("warn", "Number of serial data decreased.");
+          $(optionData[i]).remove();
+        } else if (typeof optionData[i] === "undefined") {
+          if (i === ANGLE_INDEX)
+            $('select#select-data').append(optionObj.clone().attr('value', i).text(`${i+1} - ${arrData[i]} (Angle)`));
+          else
+            $('select#select-data').append(optionObj.clone().attr('value', i).text(`${i+1} - ${arrData[i]}`));
+        } else {
+          if (i === ANGLE_INDEX)
+            $(optionData[i]).attr('value', i).text(`${i+1} - ${arrData[i]} (Angle)`);
+          else
+            $(optionData[i]).attr('value', i).text(`${i+1} - ${arrData[i]}`);
+        }
+      }
+    };
+
+    // Draw graph on screen by setting.
+    function drawGraph(rawText) {
+      var rawArr = rawText.replace('[', '').replace(']', '').split(',');
+      $.each(gArr, function(idx, val) {
+        var chart = canvasObj[idx];
+        // console.log(chart);
+
+        $.each(val, function(i, v) {
+          if (Number(v) === ANGLE_INDEX) {
+            var radian = (Number(rawArr[v]) - Number($('input#encoderdegree').val())) * PI / 180;
+            var torque = Number($('input#armlength').val()) * Number($('input#dumbbellweight').val()) * G * Math.cos(radian);
+
+            if (typeof chart.data.datasets[i] === "undefined") {
+              chart.data.datasets.push({
+                label: `Dataset-${Number(v)+1}`,
+                data: [torque],
+                fill: false,
+                backgroundColor: window.chartColor[Number(v) % window.chartColor.length],
+                borderColor: window.chartColor[Number(v) % window.chartColor.length]
+              });
+              chart.data.labels = [1];
+            } else {
+              if (chart.data.datasets[i].data.length > MAX_DATASET_LENGTH)
+                chart.data.datasets[i].data.shift();
+
+              chart.data.datasets[i].data.push(torque);
+            }
+          } else {
+            if (typeof chart.data.datasets[i] === "undefined") {
+              chart.data.datasets.push({
+                label: `Dataset-${Number(v)+1}`,
+                data: [rawArr[v]],
+                fill: false,
+                backgroundColor: window.chartColor[Number(v) % window.chartColor.length],
+                borderColor: window.chartColor[Number(v) % window.chartColor.length]
+              });
+              chart.data.labels = [1];
+            } else {
+              if (chart.data.datasets[i].data.length > MAX_DATASET_LENGTH)
+                chart.data.datasets[i].data.shift();
+
+              chart.data.datasets[i].data.push(rawArr[v]);
+            }
+          }
+          
+        });
+        
+        if (chart.data.labels.length <= MAX_DATASET_LENGTH)
+          chart.data.labels.push(chart.data.labels.length + 1);
+        
+        chart.update();
+
+        //console.log(chart.data.labels, chart.data.datasets);
+      });
+    };
+
+
+    var record = [];
+    // If record option is On, save it to file.
+    function recordFile(rawText) {
+      if ($('button#toggle-record').text() === "Stop") {
+        if (typeof savePath === 'undefined' || savePath === null) {
+          savePath = dialog.showSaveDialog(null);
+          
+          if (typeof savePath === "undefined" 
+          || savePath === null
+          || savePath === "") {
+            $('#errorModal').modal('show');
+            $('button#toggle-record').text('Record');
+            savePath = null;
+            return;
+          }
+          
+          wstream = fs.createWriteStream(savePath);
+          wstream.on('error', function(e) {
+            logOnScreen('error', e);
+            $('#errorModal').modal('show');
+            $('button#toggle-record').text('Record');
+            savePath = null;
+            return;
+          });
+        } else {
+          if (fs.existsSync(savePath)) {
+            uptime = process.uptime().toFixed(3);
+            // [, ] appeared just one time.
+            saveText = rawText.replace('[', '').replace(']', '');
+            saveArr = saveText.split(',');
+            
+            // Calculate Angle to Torque value.
+            var radian = (Number(saveArr[ANGLE_INDEX]) - Number($('input#encoderdegree').val())) * PI / 180;
+            saveArr[ANGLE_INDEX] = Number($('input#armlength').val()) * Number($('input#dumbbellweight').val()) * G * Math.cos(radian);
+            saveText = saveArr.join(', ');
+
+            wstream.write(`${uptime}, ${saveText}\r\n`);
+          }
+        }
+      } else {
+        try {
+          savePath = null;
+          wstream.end();
+          wstream.destroy();
+        } catch(e) {}
+      }
+    };
+
+    // Reserved for future
+    // function writeonSer(data){
+    //     //Write the data to serial port.
+    //     sp.write(data, function(err) {
+    //         if (err) {
+    //             return console.log('Error on write: ', err.message);
+    //         }
+    //         console.log('message written');
+    //     });
+    // };
+  });
+  </script>
+</html>
