@@ -30,6 +30,7 @@ npm install
 4. Rebuild for version compatibility
 ```bash
 npm rebuild
+npm rebuild serialport --update-binary
 ```
 
 5. Rebuild Electron for version compatibility
