@@ -24,7 +24,7 @@ You can easily start with Download this project ZIP
 npm install
 ```
 
-4. Rebuild packages, additionally rebuild serialport with --update-binary option.
+4. Rebuild packages, additionally rebuild serialport with *--update-binary* option.
 ```bash
 npm rebuild
 npm rebuild serialport --update-binary
