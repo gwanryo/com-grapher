@@ -35,7 +35,7 @@ npm rebuild serialport --update-binary
 
 5. Rebuild Electron for version compatibility
 ```bash
-./node_modules/.bin/electron-rebuild.cmd
+./node_modules/.bin/electron-rebuild
 ```
 
 6. For executable, run this command
