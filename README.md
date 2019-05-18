@@ -19,7 +19,7 @@ You can easily start with Download this project ZIP
    * *If you have **VS 2015** or **VS 2017**, you can skip this step*
    * **Don't use VS 2019! (Compatibility issue with node-gyp)**
 
-3. If all are installed, write this command
+3. Install required npm package for build
 ```bash
 npm install
 ```
