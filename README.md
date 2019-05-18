@@ -8,19 +8,16 @@ You can easily start with Download this project ZIP
 
 ### Prerequisites
 
-* [Node.js](https://nodejs.org/) (10.15.3 or 12.2.0)
+* [Node.js](https://nodejs.org/) 10.15.3 or 12.2.0 *(Any version will be okay, but not sure)*
 * [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159) (node-gyp)
 
 ### Build
 1. It requires [Node.js](https://nodejs.org/) and [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159)
-
-   Any version will be okay, but not sure
-
-2. For node-gyp, [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159) should be installed
-
-   (If you have **VS 2015** or **VS 2017**, you can skip this step)
-
-   **Don't use VS 2019! (Compatibility issue with node-gyp)**
+   * *Any version of Node.js will be okay, but not sure*
+   * *If you have **VS 2015** or **VS 2017**, you can skip this step*
+   
+2. For node-gyp, [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159) should be installed 
+   * **Don't use VS 2019! (Compatibility issue with node-gyp)**
 
 3. If all are installed, write this command
 ```bash
@@ -55,7 +52,7 @@ rm -rf {package resource}/app
 
 ## License
 
-None.
+This project is licensed under the MIT License - see the LICENSE file for details
 
 ## Acknowledgments
 
