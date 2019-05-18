@@ -29,21 +29,19 @@ npm install
 npm rebuild
 npm rebuild serialport --update-binary
 ```
+   or, you can just run command below
+```bash
+npm run rebuild
+```
 
 5. Rebuild electron
 ```bash
 ./node_modules/.bin/electron-rebuild
 ```
 
-6. For executable, run this command
+6. *Windows only* To build executable, run this command. This will create **dist** folder with installer and portable.
 ```bash
-npm run build
-```
-
-7. You can use asar for package and delete resource app folder
-```bash
-npm run package
-rm -rf {package resource}/app
+npm run build:win
 ```
 
 ## Authors

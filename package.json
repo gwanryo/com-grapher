@@ -1,12 +1,15 @@
 {
   "name": "com-grapher",
   "version": "1.0.0",
-  "description": "A Simple graph visualizer using serial communication",
+  "description": "A simple graph visualizer using serial communication",
+  "copyright": "© 2019, Gwanryo",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "package": "asar pack COMGrapher-win32-x64/resources/app COMGrapher-win32-x64/resources/app.asar",
-    "build": "electron-packager . COMGrapher"
+    "rebuild": "npm rebuild && npm rebuild serialport --update-binary",
+    "build:win": "npm run build:win32 && npm run build:win64",
+    "build:win32": "build --win --ia32",
+    "build:win64": "build --win --x64"
   },
   "author": "Gwanryo",
   "dependencies": {
@@ -19,9 +22,39 @@
   "devDependencies": {
     "asar": "^2.0.1",
     "electron": "^5.0.1",
+    "electron-builder": "^20.40.2",
     "electron-rebuild": "^1.8.4",
-    "electron-packager": "^13.1.1",
     "node-gyp": "^4.0.0",
     "tar": ">=4.4.2"
+  },
+  "postinstall": "electron-builder install-app-deps",
+  "build": {
+    "buildDependenciesFromSource": true,
+    "productName": "COMGrapher",
+    "appId": "com.ryo.grapher",
+    "asar": true,
+    "protocols": {
+      "name": "COMGrapher",
+      "schemes": [
+        "COMGrapher"
+      ]
+    },
+    "win": {
+      "target": [
+        "zip",
+        "nsis"
+      ],
+      "icon": "./resources/installer/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "artifactName": "${productName}-setup-${version}-${arch}.${ext}",
+      "allowToChangeInstallationDirectory": true
+    },
+    "directories": {
+      "buildResources": "resources/installer/",
+      "output": "dist/",
+      "app": "."
+    }
   }
 }
