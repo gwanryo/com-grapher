@@ -14,9 +14,9 @@ You can easily start with Download this project ZIP
 ### Build
 1. It requires [Node.js](https://nodejs.org/) and [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159)
    * *Any version of Node.js will be okay, but not sure*
-   * *If you have **VS 2015** or **VS 2017**, you can skip this step*
    
-2. For node-gyp, [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159) should be installed 
+2. [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159) is required for [node-gyp](https://github.com/nodejs/node-gyp)
+   * *If you have **VS 2015** or **VS 2017**, you can skip this step*
    * **Don't use VS 2019! (Compatibility issue with node-gyp)**
 
 3. If all are installed, write this command
@@ -24,13 +24,13 @@ You can easily start with Download this project ZIP
 npm install
 ```
 
-4. Rebuild for version compatibility
+4. Rebuild packages, additionally rebuild serialport with --update-binary option.
 ```bash
 npm rebuild
 npm rebuild serialport --update-binary
 ```
 
-5. Rebuild Electron for version compatibility
+5. Rebuild electron
 ```bash
 ./node_modules/.bin/electron-rebuild
 ```
