@@ -103,5 +103,4 @@ typings/
 
 .vscode
 COMGrapher-win32-x64
-package-lock.json
 doc
