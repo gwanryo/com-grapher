@@ -9,7 +9,7 @@ You can easily start with Download this project ZIP
 ### Prerequisites
 
 * [Node.js](https://nodejs.org/) 10.15.3 or 12.2.0 *(Any version will be okay, but not sure)*
-* [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159) (node-gyp)
+* [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159)
 
 ### Build
 1. It requires [Node.js](https://nodejs.org/) and [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159)
@@ -39,7 +39,7 @@ npm run rebuild
 ./node_modules/.bin/electron-rebuild
 ```
 
-6. *Windows only* To build executable, run this command. This will create **dist** folder with installer and portable.
+6. *(Windows only)* To build executable, run this command. This will create **dist** folder with installer and portable.
 ```bash
 npm run build:win
 ```
@@ -51,6 +51,9 @@ npm run build:win
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details
+
+## Credits
+Icons made by [Smashicons](https://www.flaticon.com/authors/smashicons) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
 
 ## Acknowledgments
 
