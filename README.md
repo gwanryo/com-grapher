@@ -16,7 +16,7 @@ You can easily start with Download this project ZIP
 
    Any version will be okay, but not sure
 
-2. For node-gyp, [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159) should installed
+2. For node-gyp, [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159) should be installed
 
    (If you have **VS 2015** or **VS 2017**, you can skip this step)
 
