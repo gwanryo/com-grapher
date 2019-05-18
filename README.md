@@ -1,5 +1,5 @@
-# Serial to Graph Visualizer
-![Serial to Graph Visualizer](https://user-images.githubusercontent.com/9062624/57948142-d2400680-791b-11e9-8df4-8e82e2c6bfda.png)
+# COM Grapher
+![COM Grapher](https://user-images.githubusercontent.com/9062624/57970046-64491d00-79b7-11e9-8259-6d960aa5ce89.png)
 Simple graph viewer communicates with serial(COM port).
 
 ## Getting Started
@@ -41,6 +41,8 @@ npm run rebuild
 
 6. *(Windows only)* To build executable, run this command. This will create **dist** folder with installer and portable.
 ```bash
+npm install -g electron-builder
+electron-builder install-app-deps
 npm run build:win
 ```
 
