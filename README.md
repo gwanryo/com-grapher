@@ -46,7 +46,7 @@ npm run build:win
 
 ### Usage
 #### Transmit Data Type
-* Data in one line, delimited by \r (0x0D)
+* Data in one line, delimited by as you input (\r, \n, \r\n ...)
 * Data string should be enclosed with square brackets
 * Only numbers(or floats) are allowed
 * **33nd data will be recognized by angle**, so if you don't want, you have to modify some code
@@ -55,7 +55,17 @@ For example, following data will accepted and decoded well by program
 ```
 [1, 2, 3, 4, 5, 0.001, 0.002, 0.003, 0.004, 0.005]\n
 ```
+or
+```
+[1, 2, 3, 4, 5, 0.001, 0.002, 0.003, 0.004, 0.005]\r
+```
+or
+```
+[1, 2, 3, 4, 5, 0.001, 0.002, 0.003, 0.004, 0.005]\r\n
+```
 
+#### What is Arm, Dumbbell, Encoder, Angle Index?
+* It's for my own usage, put **Angle Index** to **maximum value** if you don't want.
 
 #### 
 
