@@ -9,15 +9,13 @@ You can easily start with Download this project ZIP
 ### Prerequisites
 
 * [Node.js](https://nodejs.org/) 10.15.3 or 12.2.0 *(Any version will be okay, but not sure)*
-* [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159)
+* [Visual Studio Build Tools](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools) or [Visual Studio 2017 Community](https://visualstudio.microsoft.com/pl/thank-you-downloading-visual-studio/?sku=Community)
+* [Python 2.7](https://www.python.org/)
 
 ### Build
-1. It requires [Node.js](https://nodejs.org/) and [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159)
-   * *Any version of Node.js will be okay, but not sure*
+1. Install [Node.js](https://nodejs.org/) *(Any version will be okay, but not sure)*
    
-2. [MS Build Tools 2015](https://www.microsoft.com/en-US/download/details.aspx?id=48159) is required for [node-gyp](https://github.com/nodejs/node-gyp)
-   * *If you have **VS 2015** or **VS 2017**, you can skip this step*
-   * **Don't use VS 2019! (Compatibility issue with node-gyp)**
+2. Follow [node-gyp installation](https://github.com/nodejs/node-gyp#installation) and make sure node-gyp is properly configured
 
 3. Install required npm package for build
 ```bash
@@ -45,6 +43,21 @@ npm install -g electron-builder
 electron-builder install-app-deps
 npm run build:win
 ```
+
+### Usage
+#### Transmit Data Type
+* Data in one line, delimited by \r (0x0D)
+* Data string should be enclosed with square brackets
+* Only numbers(or floats) are allowed
+* **33nd data will be recognized by angle**, so if you don't want, you have to modify some code
+
+For example, following data will accepted and decoded well by program
+```
+[1, 2, 3, 4, 5, 0.001, 0.002, 0.003, 0.004, 0.005]\n
+```
+
+
+#### 
 
 ## Authors
 
