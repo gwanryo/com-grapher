@@ -49,7 +49,7 @@ npm run build:win
 * Data in one line, delimited by as you input (\r, \n, \r\n ...)
 * Data string should be enclosed with square brackets
 * Only numbers(or floats) are allowed
-* **33nd data will be recognized by angle**, so if you don't want, you have to modify some code
+* **25nd data will be recognized by angle** (If you don't want, see below)
 
 For example, following data will accepted and decoded well by program
 ```
