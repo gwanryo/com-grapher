@@ -107,8 +107,8 @@ $(function () {
 
     $('button#apply-value').click(function () {
         if ($('div#serial-graph').text() === "") {
-            MAX_DATASET_LENGTH = $('input#maxdataset').val();
-            ANGLE_INDEX = $('input#angleindex').val();
+            MAX_DATASET_LENGTH = Number($('input#maxdataset').val());
+            ANGLE_INDEX = Number($('input#angleindex').val());
         }
     });
 });

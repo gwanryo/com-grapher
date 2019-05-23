@@ -17,12 +17,12 @@ You can easily start with Download this project ZIP
    
 2. Follow [node-gyp installation](https://github.com/nodejs/node-gyp#installation) and make sure node-gyp is properly configured
 
-3. Install required npm package for build
+3. Install required npm package for build:
 ```bash
 npm install
 ```
 
-4. Rebuild packages, additionally rebuild serialport with *--update-binary* option.
+4. Rebuild packages, additionally rebuild serialport with *--update-binary* option:
 ```bash
 npm rebuild
 npm rebuild serialport --update-binary
@@ -32,12 +32,12 @@ npm rebuild serialport --update-binary
 npm run rebuild
 ```
 
-5. Rebuild electron
+5. Rebuild electron:
 ```bash
 ./node_modules/.bin/electron-rebuild
 ```
 
-6. *(Windows only)* To build executable, run this command. This will create **dist** folder with installer and portable.
+6. *(Windows only)* To build executable, run this command. This will create **dist** folder with installer and portable:
 ```bash
 npm install -g electron-builder
 electron-builder install-app-deps
@@ -66,8 +66,6 @@ or
 
 #### What is Arm, Dumbbell, Encoder, Angle Index?
 * It's for my own usage, put **Angle Index** to **maximum value** if you don't want.
-
-#### 
 
 ## Authors
 

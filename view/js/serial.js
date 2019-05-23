@@ -10,9 +10,11 @@ $(function () {
                 return;
             }
 
-            parser.destroy();
-            sp.pause();
-            sp.close();
+            try {
+                parser.destroy();
+                sp.pause();
+                sp.close();
+            } catch(e) {}
 
             parser = null, sp = null;
 
@@ -58,7 +60,7 @@ $(function () {
 
         // Initialize serialport with preset baudrate.
         sp = new serialPort(comPort, {
-            autoopen: false,
+            autoopen: true,
             baudRate: baudRate,
             databits: dataBits,
             parity: parity,
@@ -149,11 +151,11 @@ $(function () {
             $.each(val, function (i, v) {
                 if (Number(v) === ANGLE_INDEX) {
                     var radian = (Number(rawArr[v]) - Number($('input#encoderdegree').val())) * PI / 180;
-                    var torque = Number($('input#armlength').val()) * Number($('input#dumbbellweight').val()) * G * Math.cos(radian);
+                    var torque = -Number($('input#armlength').val()) * Number($('input#dumbbellweight').val()) * G * Math.cos(radian);
 
                     if (typeof chart.data.datasets[i] === "undefined") {
                         chart.data.datasets.push({
-                            label: `Dataset-${Number(v)+1}`,
+                            label: `Data-${Number(v)+1}`,
                             data: [torque],
                             fill: false,
                             backgroundColor: window.chartColor[Number(v) % window.chartColor.length],
@@ -197,31 +199,34 @@ $(function () {
 
 
     var record = [],
-        startTime = undefined;
+        startTime = undefined,
+        dialogPromise;
     // If record option is On, save it to file.
     function recordFile(rawText) {
         if ($('button#toggle-record').text() === "Stop") {
             if (typeof savePath === 'undefined' || savePath === null) {
-                savePath = dialog.showSaveDialog(null);
+                savePath = "";
+                dialog.showSaveDialog(null, {}, name => {
+                    savePath = name;
+                    if (typeof savePath === "undefined" ||
+                        savePath === null ||
+                        savePath === "") {
+                        $('#errorModal').modal('show');
+                        $('button#toggle-record').text('Record');
+                        startTime = undefined;
+                        savePath = null;
+                        return;
+                    }
 
-                if (typeof savePath === "undefined" ||
-                    savePath === null ||
-                    savePath === "") {
-                    $('#errorModal').modal('show');
-                    $('button#toggle-record').text('Record');
-                    startTime = undefined;
-                    savePath = null;
-                    return;
-                }
-
-                wstream = fs.createWriteStream(savePath);
-                wstream.on('error', function (e) {
-                    logOnScreen('error', e);
-                    $('#errorModal').modal('show');
-                    $('button#toggle-record').text('Record');
-                    startTime = undefined;
-                    savePath = null;
-                    return;
+                    wstream = fs.createWriteStream(savePath);
+                    wstream.on('error', function (e) {
+                        logOnScreen('error', e);
+                        $('#errorModal').modal('show');
+                        $('button#toggle-record').text('Record');
+                        startTime = undefined;
+                        savePath = null;
+                        return;
+                    });     
                 });
             } else {
                 if (fs.existsSync(savePath)) {
@@ -235,7 +240,11 @@ $(function () {
 
                     // Calculate Angle to Torque value.
                     var radian = (Number(saveArr[ANGLE_INDEX]) - Number($('input#encoderdegree').val())) * PI / 180;
-                    saveArr[ANGLE_INDEX] = Number($('input#armlength').val()) * Number($('input#dumbbellweight').val()) * G * Math.cos(radian);
+                    if (ANGLE_INDEX + 1 < saveArr.length) {
+                        saveArr[saveArr.length] = Number($('input#armlength').val()) * Number($('input#dumbbellweight').val()) * G * Math.cos(radian);
+                    } else {
+                        saveArr[ANGLE_INDEX + 1] = Number($('input#armlength').val()) * Number($('input#dumbbellweight').val()) * G * Math.cos(radian);
+                    }
                     saveText = saveArr.join(', ');
 
                     wstream.write(`${uptime}, ${saveText}\r\n`);
