@@ -114,9 +114,35 @@ $(function () {
 
     };
 
+    // Transform hex string to integer, or decimal to integer
+    // This function supports following types of data
+    // [0.1 0.2 0.3 0.4] or [0.1, 0.2, 0.3, 0.4] or 00 1A 2B 3C 2D (in hex)
+    function transformStrToInt(rawText) {
+        var arrData, tfData = [];
+
+        if (rawText.indexOf(',') === -1) {
+            arrData = rawText.replace('[', '').replace(']', '').split(' ');
+        } else {
+            arrData = rawText.replace('[', '').replace(']', '').split(',');
+        }
+
+        $.each(arrData, function(idx, val) {
+            // '1A' is not a number
+            if (isNaN(Number(val))) {
+                // so, we parse it to hexadecimal
+                tfData.push(parseInt(val, 16));
+            } else {
+                // otherwise, we parse it to decimal float
+                tfData.push(Number(val));
+            }
+        });
+
+        return tfData;
+    };
+
     // Display value changes on multiselect.
     function updateDataSelection(rawText) {
-        var arrData = rawText.replace('[', '').replace(']', '').split(',');
+        var arrData = transformStrToInt(rawText);
         // var selectData = $('select#select-data');
         var optionData = $('select#select-data > option');
         var optionObj = $('<option></option>');
@@ -143,7 +169,7 @@ $(function () {
 
     // Draw graph on screen by setting.
     function drawGraph(rawText) {
-        var rawArr = rawText.replace('[', '').replace(']', '').split(',');
+        var rawArr = transformStrToInt(rawText);
         $.each(gArr, function (idx, val) {
             var chart = canvasObj[idx];
             // console.log(chart);
@@ -236,7 +262,7 @@ $(function () {
 
                     // [, ] appeared just one time.
                     saveText = rawText.replace('[', '').replace(']', '');
-                    saveArr = saveText.split(',');
+                    saveArr = transformStrToInt(rawText);
 
                     // Calculate Angle to Torque value.
                     var radian = (Number(saveArr[ANGLE_INDEX]) - Number($('input#encoderdegree').val())) * PI / 180;
