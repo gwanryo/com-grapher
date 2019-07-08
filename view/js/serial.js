@@ -84,7 +84,7 @@ $(function () {
         $('button#serial-connect').text("Disconnect");
 
         function functionQueue(rawText) {
-            logOnScreen('debug', rawText);
+            logOnScreen('debug', transformStrToInt(rawText));
             updateDataSelection(rawText);
             drawGraph(rawText);
             recordFile(rawText);
@@ -130,7 +130,12 @@ $(function () {
             // '1A' is not a number
             if (isNaN(Number(val))) {
                 // so, we parse it to hexadecimal
-                tfData.push(parseInt(val, 16));
+                if (isNaN(parseInt(val, 16))) {
+                    for(i = 0; i < rawText.length; i++)
+                        tfData.push(rawText.charCodeAt(i));
+                } else {
+                    tfData.push(parseInt(val, 16));
+                }
             } else {
                 // otherwise, we parse it to decimal float
                 tfData.push(Number(val));

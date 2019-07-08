@@ -1,6 +1,6 @@
 {
   "name": "com-grapher",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A simple graph visualizer using serial communication",
   "copyright": "© 2019, Gwanryo",
   "main": "main.js",
