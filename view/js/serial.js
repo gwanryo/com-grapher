@@ -16,7 +16,7 @@ $(function () {
                 sp.close();
             } catch(e) {}
 
-            parser = null, sp = null;
+            parser = null; sp = null;
 
             $('input#serialport').removeAttr("disabled");
             $('input#baudrate').removeAttr("disabled");
@@ -88,7 +88,7 @@ $(function () {
             updateDataSelection(rawText);
             drawGraph(rawText);
             recordFile(rawText);
-        };
+        }
     });
 
     // Log in Textarea
@@ -112,7 +112,7 @@ $(function () {
         // else
         //   console.log(`[${uptime}:${uType}] ${JSON.parse(JSON.stringify(obj))}`);
 
-    };
+    }
 
     // Transform hex string to integer, or decimal to integer
     // This function supports following types of data
@@ -148,7 +148,7 @@ $(function () {
         });
 
         return tfData;
-    };
+    }
 
     // Display value changes on multiselect.
     function updateDataSelection(rawText) {
@@ -175,7 +175,7 @@ $(function () {
                     $(optionData[i]).attr('value', i).text(`${i+1} - ${arrData[i]}`);
             }
         }
-    };
+    }
 
     // Draw graph on screen by setting.
     function drawGraph(rawText) {
@@ -231,11 +231,11 @@ $(function () {
 
             //console.log(chart.data.labels, chart.data.datasets);
         });
-    };
+    }
 
 
     var record = [],
-        startTime = undefined,
+        startTime,
         dialogPromise;
     // If record option is On, save it to file.
     function recordFile(rawText) {
@@ -276,10 +276,12 @@ $(function () {
 
                     // Calculate Angle to Torque value.
                     var radian = (Number(saveArr[ANGLE_INDEX]) - Number($('input#encoderdegree').val())) * PI / 180;
+                    var torque = -Number($('input#armlength').val()) * Number($('input#dumbbellweight').val()) * G * Math.cos(radian);
+
                     if (ANGLE_INDEX + 1 < saveArr.length) {
-                        saveArr[saveArr.length] = Number($('input#armlength').val()) * Number($('input#dumbbellweight').val()) * G * Math.cos(radian);
+                        saveArr[saveArr.length] = torque;
                     } else {
-                        saveArr[ANGLE_INDEX + 1] = Number($('input#armlength').val()) * Number($('input#dumbbellweight').val()) * G * Math.cos(radian);
+                        saveArr[ANGLE_INDEX + 1] = torque;
                     }
                     saveText = saveArr.join(', ');
 
@@ -294,7 +296,7 @@ $(function () {
                 wstream.destroy();
             } catch (e) {}
         }
-    };
+    }
 
     // Reserved for future
     // function writeonSer(data){
