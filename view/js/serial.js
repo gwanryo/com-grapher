@@ -187,7 +187,7 @@ $(function () {
             $.each(val, function (i, v) {
                 if (Number(v) === ANGLE_INDEX) {
                     var radian = (Number(rawArr[v]) - Number($('input#encoderdegree').val())) * PI / 180;
-                    var torque = -Number($('input#armlength').val()) * Number($('input#dumbbellweight').val()) * G * Math.cos(radian);
+                    var torque = -Number($('input#armlength').val()) * Number($('input#dumbbellweight').val()) * G * Math.sin(radian);
 
                     if (typeof chart.data.datasets[i] === "undefined") {
                         chart.data.datasets.push({
@@ -276,7 +276,7 @@ $(function () {
 
                     // Calculate Angle to Torque value.
                     var radian = (Number(saveArr[ANGLE_INDEX]) - Number($('input#encoderdegree').val())) * PI / 180;
-                    var torque = -Number($('input#armlength').val()) * Number($('input#dumbbellweight').val()) * G * Math.cos(radian);
+                    var torque = -Number($('input#armlength').val()) * Number($('input#dumbbellweight').val()) * G * Math.sin(radian);
 
                     if (ANGLE_INDEX + 1 < saveArr.length) {
                         saveArr[saveArr.length] = torque;
